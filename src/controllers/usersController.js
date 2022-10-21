@@ -10,7 +10,7 @@ const { UserAPIModel } = require('../utils/APIModels');
  * @param {import('express').NextFunction} next
  */
 const getMe = async (req, res, next) => {
-  const userId = '';
+  const userId = req.user._id;
   try {
     const user = await User.findById(userId);
     if (!user) next(new BadRequestError());
@@ -27,7 +27,7 @@ const getMe = async (req, res, next) => {
  * @param {import('express').NextFunction} next
  */
 const updateMe = async (req, res, next) => {
-  const userId = '';
+  const userId = req.user._id;
   const { email, name } = req.body;
   try {
     const user = await User.findByIdAndUpdate(
