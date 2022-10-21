@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { useMainRouter } = require('./routes');
+const { errorHandler } = require('./middleware/errorHandler');
 
 const { MONGO_CONNECTION_STRING, NODE_ENV = 'development', PORT = 3000 } = process.env;
 
@@ -21,5 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 useMainRouter(app);
+
+app.use(errorHandler);
 
 module.exports = { app, NODE_ENV, PORT };
