@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const { useMainRouter } = require('./routes');
 
 const { MONGO_CONNECTION_STRING, NODE_ENV = 'development', PORT = 3000 } = process.env;
@@ -15,6 +16,9 @@ if (!MONGO_CONNECTION_STRING) {
 mongoose.connect(MONGO_CONNECTION_STRING);
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 useMainRouter(app);
 
