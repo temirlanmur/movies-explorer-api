@@ -1,7 +1,7 @@
 const { Error: MongooseError } = require('mongoose');
 const { User } = require('../models/User');
 const { BadRequestError } = require('../utils/Errors');
-const { UserAPIModel } = require('../utils/APIModels/UserAPIModel');
+const { UserAPIModel } = require('../utils/APIModels');
 
 /**
  * Gets user profile data
