@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const { useMainRouter } = require('./routes');
 
 const { MONGO_CONNECTION_STRING, NODE_ENV = 'development', PORT = 3000 } = process.env;
 
@@ -14,5 +15,7 @@ if (!MONGO_CONNECTION_STRING) {
 mongoose.connect(MONGO_CONNECTION_STRING);
 
 const app = express();
+
+useMainRouter(app);
 
 module.exports = { app, NODE_ENV, PORT };
