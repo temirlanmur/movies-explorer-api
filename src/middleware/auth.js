@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { UnauthorizedError } = require('../utils/Errors');
 
-const { JWT_SECRET, NODE_ENV } = process.env;
-
-const secret = NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret';
+const { JWT_SECRET } = require('../environment');
 
 /**
  * Enables authorization
@@ -19,7 +17,7 @@ const auth = (req, res, next) => {
     const token = authorization.replace('Bearer ', '');
     let payload;
     try {
-      payload = jwt.verify(token, secret);
+      payload = jwt.verify(token, JWT_SECRET);
     } catch (error) {
       next(new UnauthorizedError());
       return;
