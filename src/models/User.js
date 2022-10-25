@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcrypt');
+const { UnauthorizedError } = require('../utils/Errors');
 
 const USER_CONSTANTS = {
   NAME_MIN_LENGTH: 2,
@@ -28,6 +30,14 @@ const userSchema = new mongoose.Schema({
     maxlength: USER_CONSTANTS.NAME_MAX_LENGTH,
   },
 });
+
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await this.findOne({ email }).select('+password');
+  if (!user) throw new UnauthorizedError();
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) throw new UnauthorizedError();
+  return user;
+};
 
 const User = mongoose.model('User', userSchema);
 
