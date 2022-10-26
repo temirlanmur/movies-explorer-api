@@ -19,7 +19,7 @@ const register = async (req, res, next) => {
   try {
     const hash = await bcrypt.hash(password, saltRounds);
     const user = await User.create({ email, password: hash, name });
-    res.send(new UserAPIModel(user));
+    res.status(201).send(new UserAPIModel(user));
   } catch (error) {
     if (error instanceof MongooseError.ValidationError) next(new BadRequestError());
     else if (error.code === 11000) next(new ConflictError());
