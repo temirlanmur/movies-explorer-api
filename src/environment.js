@@ -47,4 +47,5 @@ module.exports = {
   JWT_SECRET,
   NODE_ENV,
   PORT,
+  IS_DEVELOPMENT: NODE_ENV === 'development',
 };
