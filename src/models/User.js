@@ -29,15 +29,17 @@ const userSchema = new mongoose.Schema({
     minlength: USER_CONSTANTS.NAME_MIN_LENGTH,
     maxlength: USER_CONSTANTS.NAME_MAX_LENGTH,
   },
+}, {
+  statics: {
+    async findByCredentials(email, password) {
+      const user = await this.findOne({ email }).select('+password');
+      if (!user) throw new UnauthorizedError();
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) throw new UnauthorizedError();
+      return user;
+    },
+  },
 });
-
-userSchema.statics.findByCredentials = async (email, password) => {
-  const user = await this.findOne({ email }).select('+password');
-  if (!user) throw new UnauthorizedError();
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) throw new UnauthorizedError();
-  return user;
-};
 
 const User = mongoose.model('User', userSchema);
 
