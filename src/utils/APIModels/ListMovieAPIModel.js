@@ -1,5 +1,5 @@
 const { OkResponseAPIModel } = require('./OkResponseAPIModel');
-const { createListMovieApiModel } = require('./utils');
+const { createMovieApiModel } = require('./utils');
 
 class ListMovieAPIModel extends OkResponseAPIModel {
   /**
@@ -8,7 +8,7 @@ class ListMovieAPIModel extends OkResponseAPIModel {
    */
   constructor(moviesArray) {
     super();
-    this.data = moviesArray.map((movie) => createListMovieApiModel(movie));
+    this.data = moviesArray.map((movie) => createMovieApiModel(movie));
   }
 }
 

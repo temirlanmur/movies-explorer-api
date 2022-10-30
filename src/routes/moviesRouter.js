@@ -3,6 +3,6 @@ const { getMovies, createMovie, deleteMovie } = require('../controllers/moviesCo
 
 moviesRouter.get('/', getMovies);
 moviesRouter.post('/', createMovie);
-moviesRouter.delete('/:id', deleteMovie);
+moviesRouter.delete('/:movieId', deleteMovie);
 
 module.exports = { moviesRouter };

@@ -29,7 +29,7 @@ const createMovie = async (req, res, next) => {
   const { ...movieData } = req.body;
   const userId = req.user._id;
   try {
-    const movie = await Movie.create({ owner: userId, ...movieData });
+    const movie = await Movie.create({ ...movieData, owner: userId });
     res.send(new MovieAPIModel(movie));
   } catch (error) {
     if (error instanceof MongooseError.ValidationError) next(new BadRequestError());
