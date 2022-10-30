@@ -7,7 +7,7 @@ const { NotFoundError } = require('../utils/Errors');
  * @param {import('express').NextFunction} next
  */
 const notFoundHandler = (req, res, next) => {
-  next(new NotFoundError());
+  next(new NotFoundError('The resource does not exist'));
 };
 
 module.exports = { notFoundHandler };

@@ -32,7 +32,7 @@ const createMovie = async (req, res, next) => {
     const movie = await Movie.create({ ...movieData, owner: userId });
     res.send(new MovieAPIModel(movie));
   } catch (error) {
-    if (error instanceof MongooseError.ValidationError) next(new BadRequestError());
+    if (error instanceof MongooseError.ValidationError) next(new BadRequestError('Some of the fields are invalid'));
     else next(error);
   }
 };
@@ -48,12 +48,12 @@ const deleteMovie = async (req, res, next) => {
   const userId = req.user._id;
   try {
     const movie = await Movie.findById(movieId);
-    if (!movie) throw new NotFoundError();
-    if (movie.owner.toString() !== userId) throw new ForbiddenError();
+    if (!movie) throw new NotFoundError('Cannot find the document');
+    if (movie.owner.toString() !== userId) throw new ForbiddenError('Not enough rights to delete the document');
     await Movie.deleteOne({ _id: movieId });
     res.send(new OkResponseAPIModel());
   } catch (error) {
-    if (error instanceof MongooseError.CastError) next(new BadRequestError());
+    if (error instanceof MongooseError.CastError) next(new BadRequestError('Incorrect format of the document id'));
     else next(error);
   }
 };

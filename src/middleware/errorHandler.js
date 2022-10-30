@@ -12,9 +12,9 @@ const errorHandler = (error, req, res, next) => {
   if (res.headersSent) {
     next(error);
   } else if (error instanceof HttpError) {
-    res.status(error.statusCode).send(new ErrorAPIModel());
+    res.status(error.statusCode).send(new ErrorAPIModel(error.message));
   } else {
-    res.status(500).send(new ErrorAPIModel());
+    res.status(500).send(new ErrorAPIModel('Something went wrong :('));
   }
 };
 

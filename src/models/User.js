@@ -33,9 +33,9 @@ const userSchema = new mongoose.Schema({
   statics: {
     async findByCredentials(email, password) {
       const user = await this.findOne({ email }).select('+password');
-      if (!user) throw new UnauthorizedError();
+      if (!user) throw new UnauthorizedError('Either user email, or password is invalid');
       const match = await bcrypt.compare(password, user.password);
-      if (!match) throw new UnauthorizedError();
+      if (!match) throw new UnauthorizedError('Either user email, or password is invalid');
       return user;
     },
   },
