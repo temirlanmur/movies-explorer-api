@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const { UnauthorizedError } = require('../utils/Errors');
+const { API_MESSAGES: MSGS } = require('../constants');
 
 const USER_CONSTANTS = {
   NAME_MIN_LENGTH: 2,
@@ -33,9 +34,9 @@ const userSchema = new mongoose.Schema({
   statics: {
     async findByCredentials(email, password) {
       const user = await this.findOne({ email }).select('+password');
-      if (!user) throw new UnauthorizedError('Either user email, or password is invalid');
+      if (!user) throw new UnauthorizedError(MSGS.LOGIN_ERROR);
       const match = await bcrypt.compare(password, user.password);
-      if (!match) throw new UnauthorizedError('Either user email, or password is invalid');
+      if (!match) throw new UnauthorizedError(MSGS.LOGIN_ERROR);
       return user;
     },
   },

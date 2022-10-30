@@ -1,5 +1,6 @@
 const { ErrorAPIModel } = require('../utils/APIModels');
 const { HttpError } = require('../utils/Errors');
+const { API_MESSAGES: MSGS } = require('../constants');
 
 /**
  * Handles errors
@@ -14,7 +15,7 @@ const errorHandler = (error, req, res, next) => {
   } else if (error instanceof HttpError) {
     res.status(error.statusCode).send(new ErrorAPIModel(error.message));
   } else {
-    res.status(500).send(new ErrorAPIModel('Something went wrong :('));
+    res.status(500).send(new ErrorAPIModel(MSGS.SOMETHING_WENT_WRONG));
   }
 };
 

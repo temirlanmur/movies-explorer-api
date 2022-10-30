@@ -1,4 +1,5 @@
 const { NotFoundError } = require('../utils/Errors');
+const { API_MESSAGES: MSGS } = require('../constants');
 
 /**
  * Handles requests to non-existing routes
@@ -7,7 +8,7 @@ const { NotFoundError } = require('../utils/Errors');
  * @param {import('express').NextFunction} next
  */
 const notFoundHandler = (req, res, next) => {
-  next(new NotFoundError('The resource does not exist'));
+  next(new NotFoundError(MSGS.RESOURCE_NONEXISTENT));
 };
 
 module.exports = { notFoundHandler };
