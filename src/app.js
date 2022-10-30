@@ -10,8 +10,9 @@ const { limiter } = require('./middleware/limiter');
 const { cors } = require('./middleware/cors');
 const { errorHandler } = require('./middleware/errorHandler');
 const { useMainRouter } = require('./routes');
+const { MONGO_DB_NAME } = require('./constants');
 
-mongoose.connect(MONGO_CONNECTION_STRING);
+mongoose.connect(MONGO_CONNECTION_STRING, { dbName: MONGO_DB_NAME });
 
 const app = express();
 
