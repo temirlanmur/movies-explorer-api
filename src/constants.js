@@ -1,4 +1,6 @@
 const MONGO_DB_NAME = 'moviesdb';
+const DEFAULT_MONGO_CONNECTION_STRING = `mongodb://localhost:27017/${MONGO_DB_NAME}`;
+const DEV_SECRET = 'dev-secret';
 const API_MESSAGES = {
   ID_INCORRECT_FORMAT: 'Incorrect format of the document id',
   NOT_ALLOWED: 'Not enough rights to delete the document',
@@ -12,4 +14,9 @@ const API_MESSAGES = {
   SOMETHING_WENT_WRONG: 'Something went wrong :(',
 };
 
-module.exports = { MONGO_DB_NAME, API_MESSAGES };
+module.exports = {
+  MONGO_DB_NAME,
+  DEFAULT_MONGO_CONNECTION_STRING,
+  DEV_SECRET,
+  API_MESSAGES,
+};

@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 require('dotenv').config();
 
+const { DEFAULT_MONGO_CONNECTION_STRING, DEV_SECRET } = require('./constants');
+
 /**
  * Imports and checks environment vars
  * @returns environment vars
@@ -13,22 +15,22 @@ const _readEnv = () => {
     PORT: port = 3000,
   } = process.env;
 
+  let _mongoConString = mongoConString;
   if (!mongoConString) {
-    console.log('mongo connection string is not defined!');
-    process.exit(1);
+    _mongoConString = DEFAULT_MONGO_CONNECTION_STRING;
   }
 
   let _jwtSecret = jwtSecret;
   if (nodeEnv !== 'production') {
     console.log('non-production environment is detected; dev secret will be used');
-    _jwtSecret = 'dev-secret';
+    _jwtSecret = DEV_SECRET;
   } else if (!jwtSecret) {
     console.log('jwt secret has to be defined in production mode!');
     process.exit(1);
   }
 
   return {
-    MONGO_CONNECTION_STRING: mongoConString,
+    MONGO_CONNECTION_STRING: _mongoConString,
     JWT_SECRET: _jwtSecret,
     NODE_ENV: nodeEnv,
     PORT: port,
