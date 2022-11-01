@@ -83,6 +83,8 @@ const updateMe = async (req, res, next) => {
   } catch (error) {
     if (error instanceof MongooseError.ValidationError) {
       next(new BadRequestError(MSGS.VALIDATION_ERROR));
+    } else if (error.code === 11000) {
+      next(new ConflictError(MSGS.CONFLICT_ERROR));
     } else next(error);
   }
 };
