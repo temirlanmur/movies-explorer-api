@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { UnauthorizedError } = require('../utils/Errors');
 const { API_MESSAGES: MSGS } = require('../constants');
 
-const USER_CONSTANTS = {
+const USER_SCHEMA_CONSTANTS = {
   NAME_MIN_LENGTH: 2,
   NAME_MAX_LENGTH: 30,
 };
@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: USER_CONSTANTS.NAME_MIN_LENGTH,
-    maxlength: USER_CONSTANTS.NAME_MAX_LENGTH,
+    minlength: USER_SCHEMA_CONSTANTS.NAME_MIN_LENGTH,
+    maxlength: USER_SCHEMA_CONSTANTS.NAME_MAX_LENGTH,
   },
 }, {
   statics: {
@@ -44,4 +44,4 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = { User, USER_CONSTANTS };
+module.exports = { User, USER_SCHEMA_CONSTANTS };
