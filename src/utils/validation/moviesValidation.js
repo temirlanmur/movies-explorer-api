@@ -28,7 +28,7 @@ const createValidator = celebrate({
     image: urlSchema,
     trailerLink: urlSchema,
     thumbnail: urlSchema,
-    movieId: Joi.string().required(),
+    movieId: Joi.number().integer().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),
