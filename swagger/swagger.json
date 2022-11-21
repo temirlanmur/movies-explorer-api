@@ -1,0 +1,432 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Movies Explorer API",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "tags": [
+    { "name": "user", "description": "Operations about user" },
+    { "name": "movie", "description": "Operations about movies" }
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Registers a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "example": "user@mail.com" },
+                  "password": { "type": "string", "example": "password" },
+                  "name": { "type": "string", "example": "Jim Goggins" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "409": {
+            "description": "User with the given email already exists",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signin": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Authorizes the user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "example": "user@mail.com" },
+                  "password": { "type": "string", "example": "password" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzViY2RhOWMxZWZjMWNhY2Y1MmY4MGMiLCJpYXQiOjE2NjcwMjM1ODEsImV4cCI6MTY2NzYyODM4MX0.mpgZIv72SEIyR0olJlHo4ww1AH3pnDteZE4WVgTwPzU" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Either user email, or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Gets authorized user's account information",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["user"],
+        "summary": "Updates authorized user's account information",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies": {
+      "get": {
+        "tags": ["movie"],
+        "summary": "Gets movies saved by the user",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Movie" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["movie"],
+        "summary": "Creates a new movie",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "country": { "type": "string", "example": "USA" },
+                  "director": { "type": "string", "example": "Ben Gunn" },
+                  "duration": { "type": "integer", "example": 120 },
+                  "year": { "type": "string", "example": "1883" },
+                  "description": { "type": "string", "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dignissim magna at." },
+                  "image": { "type": "string", "example": "https://google.com" },
+                  "trailerLink": { "type": "string", "example": "https://google.com" },
+                  "thumbnail": { "type": "string", "example": "https://google.com" },
+                  "movieId": { "type": "string", "example": "50341373e894ad16347efe03" },
+                  "nameRU": { "type": "string", "example": "Остров сокровищ" },
+                  "nameEN": { "type": "string", "example": "Treasure Island" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Movie" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/{movieId}": {
+      "delete": {
+        "tags": ["movie"],
+        "summary": "Deletes the movie by ID",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "description": "ID of the movie to delete",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "user@mail.com" },
+          "name": { "type": "string", "example": "Jim Goggins" }
+        }
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "50341373e894ad16347efe01" },
+          "country": { "type": "string", "example": "USA" },
+          "director": { "type": "string", "example": "Ben Gunn" },
+          "duration": { "type": "integer", "example": 120 },
+          "year": { "type": "string", "example": "1883" },
+          "description": { "type": "string", "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dignissim magna at." },
+          "image": { "type": "string", "example": "https://google.com" },
+          "trailerLink": { "type": "string", "example": "https://google.com" },
+          "thumbnail": { "type": "string", "example": "https://google.com" },
+          "owner": { "type": "string", "example": "50341373e894ad16347efe02" },
+          "movieId": { "type": "string", "example": "50341373e894ad16347efe03" },
+          "nameRU": { "type": "string", "example": "Остров сокровищ" },
+          "nameEN": { "type": "string", "example": "Treasure Island" }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean", "example": "false" },
+          "message": { "type": "string", "example": "Reason" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      }
+    }
+  }
+}
