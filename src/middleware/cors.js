@@ -7,7 +7,7 @@ const allowedCors = [
 ];
 
 if (IS_DEVELOPMENT) {
-  allowedCors.push('http://localhost:3000');
+  allowedCors.push('http://localhost:3001');
 }
 
 /**
@@ -19,7 +19,7 @@ if (IS_DEVELOPMENT) {
 const cors = (req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
-  const corsHeaders = req.headers['Access-Control-Request-Headers'];
+  const corsHeaders = req.headers['access-control-request-headers'];
 
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
